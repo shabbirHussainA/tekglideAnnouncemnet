@@ -1,0 +1,244 @@
+{% comment %} announcement div {% endcomment %}
+<div>
+    {% comment %} normal announcement div  {% endcomment %}
+  {% if block.settings.announcements == "normal" %}
+    {% comment %} adding style funtionality {% endcomment %}
+    <div style="font-size: {{ block.settings.announcement_text_size }}px; color: {{ block.settings.announcement_text_color }}; text-align: {{block.settings.announcement_text_align}};
+  {% if block.settings.announcement_text_style == 'bold' %}
+    font-weight: bold;
+  {% elsif block.settings.announcement_text_style == 'italic' %}
+    font-style: italic;
+  {% elsif block.settings.announcement_text_style == 'underline' %}
+    text-decoration: underline;
+  {% endif %}
+">
+
+      {{block.settings.announcement_Text}}
+      {% comment %} handing if condition for button {% endcomment %}
+      {% if block.settings.addButton %}
+        <button style="padding: {{ block.settings.button_padding }}px; margin: {{ block.settings.button_margin }}px; color: {{ block.settings.button_color }}; font-size: {{block.settings.button_txt_size}}px; background-color: {{ block.settings.button_background_color }};" onclick="window.location.href='{{ block.settings.button_link }}'">Shop Now!</button>
+      {% endif %}
+    </div>
+  {% endif %}
+  {% comment %} marquee announcement {% endcomment %}
+  {% if block.settings.announcements == "marquee" %}
+    <marquee scrollamount="{{block.settings.scrollamount}}" scrolldelay="{{block.settings.scrolldelay}}" style="font-size: {{ block.settings.announcement_text_size }}px; color: {{ block.settings.announcement_text_color }}; 
+    {% if block.settings.announcement_text_style == 'bold' %}
+      font-weight: bold;
+    {% elsif block.settings.announcement_text_style == 'italic' %}
+      font-style: italic;
+    {% elsif block.settings.announcement_text_style == 'underline' %}
+      text-decoration: underline;
+    {% endif %}
+  ">
+  {% comment %} runnig loop to put text 5 times  {% endcomment %}
+  {% comment %} {% for i in (1..5) %} {% endcomment %}
+    {{ block.settings.announcement_Text }}
+  {% comment %} {% endfor %} {% endcomment %}
+</marquee>
+
+  {% endif %}
+  
+  {% comment %} slider announcemnet {% endcomment %}
+  {% if block.settings.announcements == "slider" %}
+   
+    <div id="announcement{{ block.id }}">
+      <div id="announcement-placeholder{{ block.id }}" style="color: {{ block.settings.colour }}; background-color:{{ block.settings.bgcolor }};">
+        <div class="announcement-slider">
+          <button class="slider-button left-button" onclick="slideLeft('{{ block.id }}')">&#9664;</button>
+          <div class="slider-container">
+            <div class="slider-content" id="slider-content-{{ block.id }}" style="display: flex; flex-direction: row; transform: translateX(0);">
+              <!-- Slider content will be injected here -->
+              {% assign split_text = block.settings.slider_text | newline_to_br | split: '<br />'%}
+              {% for test in split_text %}
+                <div class="announcement">{{ test }}</div>
+              {% endfor %}
+            </div>
+          </div>
+          <button class="slider-button right-button" onclick="slideRight('{{ block.id }}')">&#9654;</button>
+        </div>
+      </div>
+    </div>
+    
+
+  {% endif %}
+</div>
+
+<script>
+     var sliderTexts = `{{ block.settings.slider_text }}`.split('\n');
+     
+</script>
+{% schema %}
+{
+  "name": "tekglide announcement",
+  "target": "section",
+  "stylesheet": "app.css",
+  "javascript": "app.js",
+  "settings": [
+    {
+      "type": "radio",
+      "id": "announcements",
+      "label": "announcements",
+      "default": "normal",
+      "info": "choose the type of announcement",
+      "options": [
+        {
+          "label": "normal",
+          "value": "normal"
+        },
+        {
+          "label": "marquee",
+          "value": "marquee"
+        },
+        {
+          "label": "slider",
+          "value": "slider"
+        },
+      ]
+    },
+    {
+      "type": "number",
+      "id": "marquee_scroll_amount",
+      "label": "marquee scroll amount",
+      "default": 5,
+      "info": "  This controls how many pixels the marquee moves each frame. A smaller value will make the marquee move slower."
+    },
+    {
+      "type": "number",
+      "id": "marquee_scroll_delay",
+      "label": "marquee scroll delay",
+      "default": 60,
+      "info": " This controls the delay (in milliseconds) between each movement of the marquee. A smaller value makes the marquee smoother but too small can make it too fast.",
+    },
+    {
+      "type": "text",
+      "id": "announcement_Text",
+      "label": "announcement Text",
+      "default": " welcome to the shop "
+    },
+    {
+      "type": "select",
+      "id": "announcement_text_align",
+      "label": "Announcement Text Align",
+      "default": "center",
+      "options": [ 
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ]
+    },
+    
+    {
+      "type": "color",
+      "id": "colour",
+      "label": "Text Colour",
+      "default": "#ff0000"
+    },
+    {
+      "type": "color",
+      "id": "bgcolor",
+      "label": "Announcement Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "number",
+      "id": "announcement_text_size",
+      "label": "Announcement Text Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "announcement_text_color",
+      "label": "Announcement Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "announcement_text_style",
+      "label": "Announcement Text Style",
+      "default": "normal",
+      "options": [
+        {
+          "label": "Normal",
+          "value": "normal"
+        },
+        {
+          "label": "Italic",
+          "value": "italic"
+        },
+        {
+          "label": "Bold",
+          "value": "bold"
+        },
+        {
+          "label": "Underline",
+          "value": "underline"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "addButton",
+      "label": "addButton",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "number",
+      "id": "button_padding",
+      "label": "Button Padding",
+      "default": 10
+    },
+    {
+      "type": "number",
+      "id": "button_margin",
+      "label": "Button Margin",
+      "default": 10
+    },
+    {
+      "type": "number",
+      "id": "button_txt_size",
+       "label": "button text",
+       "default": 16,
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#ff0000"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button Background Color",
+      "default": "#ffffff"
+    },
+    
+    {
+      "type": "textarea",
+      "id": "slider_text",
+      "label": "slider_text",
+      "default": "welcome \n to the \n tekglide shop"
+    },
+    {
+      "type": "html",
+      "id": "css",
+      "label": "Custom CSS"
+    },
+  ]
+}
+{% endschema %}
