@@ -1,9 +1,9 @@
 {% comment %} announcement div {% endcomment %}
-<div>
+<div id="announce">
     {% comment %} normal announcement div  {% endcomment %}
   {% if block.settings.announcements == "normal" %}
     {% comment %} adding style funtionality {% endcomment %}
-    <div style="font-size: {{ block.settings.announcement_text_size }}px; color: {{ block.settings.announcement_text_color }}; text-align: {{block.settings.announcement_text_align}};
+    <div id="normal" style="font-size: {{ block.settings.announcement_text_size }}px; color: {{ block.settings.announcement_text_color }}; text-align: {{block.settings.announcement_text_align}};background-color: {{ block.settings.bgcolor }};
   {% if block.settings.announcement_text_style == 'bold' %}
     font-weight: bold;
   {% elsif block.settings.announcement_text_style == 'italic' %}
@@ -22,7 +22,7 @@
   {% endif %}
   {% comment %} marquee announcement {% endcomment %}
   {% if block.settings.announcements == "marquee" %}
-    <marquee scrollamount="{{block.settings.scrollamount}}" scrolldelay="{{block.settings.scrolldelay}}" style="font-size: {{ block.settings.announcement_text_size }}px; color: {{ block.settings.announcement_text_color }}; 
+    <marquee scrollamount="{{block.settings.scrollamount}}" scrolldelay="{{block.settings.scrolldelay}}" style="font-size: {{ block.settings.announcement_text_size }}px; color: {{ block.settings.announcement_text_color }}; background-color: {{ block.settings.bgcolor }};
     {% if block.settings.announcement_text_style == 'bold' %}
       font-weight: bold;
     {% elsif block.settings.announcement_text_style == 'italic' %}
@@ -42,23 +42,15 @@
   {% comment %} slider announcemnet {% endcomment %}
   {% if block.settings.announcements == "slider" %}
    
-    <div id="announcement{{ block.id }}">
-      <div id="announcement-placeholder{{ block.id }}" style="color: {{ block.settings.colour }}; background-color:{{ block.settings.bgcolor }};">
-        <div class="announcement-slider">
-          <button class="slider-button left-button" onclick="slideLeft('{{ block.id }}')">&#9664;</button>
-          <div class="slider-container">
-            <div class="slider-content" id="slider-content-{{ block.id }}" style="display: flex; flex-direction: row; transform: translateX(0);">
-              <!-- Slider content will be injected here -->
-              {% assign split_text = block.settings.slider_text | newline_to_br | split: '<br />'%}
-              {% for test in split_text %}
-                <div class="announcement">{{ test }}</div>
-              {% endfor %}
-            </div>
-          </div>
-          <button class="slider-button right-button" onclick="slideRight('{{ block.id }}')">&#9654;</button>
-        </div>
+    <div id="announcement-{{ block.id }}" style="color: {{ block.settings.colour }}; background-color: {{ block.settings.bgcolor }};">
+      <div class="announcement-slider slider-content slide" id="slider-content-{{ block.id }}" style="display: flex; font-size: {{ block.settings.announcement_text_size }}px;">
+        {% assign split_text = block.settings.slider_text | newline_to_br | split: '<br />' %}
+        {% for text in split_text %}
+          <div class="announcement">{{ text }}</div>
+        {% endfor %}
       </div>
     </div>
+    
     
 
   {% endif %}
@@ -66,8 +58,25 @@
 
 <script>
      var sliderTexts = `{{ block.settings.slider_text }}`.split('\n');
-     
+     var bgcolor = '{{block.settings.bgcolor}}';
+//                // Create a new style element
+// let style = document.createElement('style');
+
+// // Set the CSS rule as the content of the style element
+// style.innerHTML = `
+//   .shopify-section-group-header-group .scroll-trigger {
+//     background-color: ${bgcolor};
+//   }
+// `;
+
+// // Append the style element to the head of the document
+// document.head.appendChild(style);
+
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% schema %}
 {
   "name": "tekglide announcement",
@@ -234,11 +243,9 @@
       "label": "slider_text",
       "default": "welcome \n to the \n tekglide shop"
     },
-    {
-      "type": "html",
-      "id": "css",
-      "label": "Custom CSS"
-    },
+
+
+
   ]
 }
 {% endschema %}

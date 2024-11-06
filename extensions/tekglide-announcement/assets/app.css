@@ -1,3 +1,4 @@
+
 #announcement3 {
     padding: 20px;
     border-radius: 10px;
@@ -63,4 +64,28 @@
     position: absolute;
     right: -20px;
   }
-  
+  .slick-next:before, .slick-prev:before{
+    color: #000 !important;
+    
+  }
+  .slick-prev{
+    left: 25% !important; 
+  }
+  .slick-next{
+    right: 25% !important;
+  }
+  .slick-next, .slick-prev{
+    z-index: 9999;
+  }
+#normal{
+  padding: 0 20px;
+}
+#shopify-block-tekglide_announcement_tekglide_announcement_TyLUVR button {
+  border: none;
+  border-radius: 5px;
+} 
+
+
+
+
+
