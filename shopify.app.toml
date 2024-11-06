@@ -3,7 +3,7 @@
 client_id = "5b3dab83fba8aedc5af3505e1e0005ca"
 name = "tekglide-announcement"
 handle = "tekglide-announcement"
-application_url = "https://evaluated-cooking-building-corporate.trycloudflare.com"
+application_url = "https://tekglide-announcemnet.vercel.app/"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://evaluated-cooking-building-corporate.trycloudflare.com/auth/callback",
-  "https://evaluated-cooking-building-corporate.trycloudflare.com/auth/shopify/callback",
-  "https://evaluated-cooking-building-corporate.trycloudflare.com/api/auth/callback"
+  "https://tekglide-announcemnet.vercel.app//auth/callback",
+  "https://tekglide-announcemnet.vercel.app/auth/shopify/callback",
+  "https://tekglide-announcemnet.vercel.app//api/auth/callback"
 ]
 
 [webhooks]
